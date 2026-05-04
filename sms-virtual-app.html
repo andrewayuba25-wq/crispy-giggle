@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DRACO NATION — Virtual SMS</title>
+  <link rel="stylesheet" href="sms-virtual-app.css" />
+</head>
+<body>
+
+  <!-- ═══════════════════ LOGIN SCREEN ═══════════════════ -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-logo">
+        <img src="draco-nation-logo.png" alt="DRACO NATION" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'" />
+        <div id="logo-fallback" class="logo-badge" style="display:none">
+          <span class="logo-title">DRACO NATION</span>
+          <span class="logo-sub">🔒 ALL APPS ACTIVE · INSTANT ACCESS 🔒</span>
+          <span class="logo-icons">$&nbsp;🇺🇸&nbsp;£&nbsp;€&nbsp;¥&nbsp;#</span>
+        </div>
+      </div>
+      <h2 class="login-heading">Sign In</h2>
+      <p class="login-desc">Enter your authorized email to access the platform.</p>
+      <div class="form-group">
+        <label for="login-email">Email Address</label>
+        <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
+      </div>
+      <div id="login-error" class="login-error" style="display:none">Unauthorized email. Access denied.</div>
+      <button class="btn btn-primary btn-full" onclick="attemptLogin()">Access DRACO NATION</button>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ MAIN APP ═══════════════════ -->
+  <div id="app" style="display:none">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-left">
+        <img src="draco-nation-logo.png" alt="DRACO NATION" class="header-logo-img" onerror="this.style.display='none'; document.getElementById('header-logo-fallback').style.display='flex'" />
+        <div id="header-logo-fallback" class="header-logo-text" style="display:none">
+          <span class="header-brand">DRACO NATION</span>
+        </div>
+      </div>
+      <div class="header-right">
+        <span class="header-badge">🔒 SECURE</span>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Sign Out</button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="tab-nav" role="tablist">
+      <button class="tab-btn active" id="tab-btn-dashboard" onclick="switchTab('dashboard')" role="tab">
+        <span class="tab-icon">📊</span><span>Dashboard</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-numbers" onclick="switchTab('numbers')" role="tab">
+        <span class="tab-icon">📱</span><span>Virtual Numbers</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-verify" onclick="switchTab('verify')" role="tab">
+        <span class="tab-icon">✅</span><span>SMS Verify</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-social" onclick="switchTab('social')" role="tab">
+        <span class="tab-icon">🌐</span><span>Social Media</span>
+      </button>
+      <button class="tab-btn" id="tab-btn-messages" onclick="switchTab('messages')" role="tab">
+        <span class="tab-icon">💬</span><span>Messages</span>
+      </button>
+    </nav>
+
+    <!-- ─── TAB: DASHBOARD ─── -->
+    <div class="tab-panel active" id="panel-dashboard">
+      <div class="panel-inner">
+        <h2 class="panel-title">Dashboard</h2>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon">📱</div>
+            <div class="stat-value" id="stat-numbers">0</div>
+            <div class="stat-label">Active Numbers</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">✅</div>
+            <div class="stat-value" id="stat-verifications">0</div>
+            <div class="stat-label">Verifications Done</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon">📨</div>
+            <div class="stat-value" id="stat-messages">0</div>
+            <div class="stat-label">SMS Received</div>
+          </div>
+          <div class="stat-card gold">
+            <div class="stat-icon">🌍</div>
+            <div class="stat-value">100<span class="stat-plus">+</span></div>
+            <div class="stat-label">Countries Supported</div>
+          </div>
+        </div>
+
+        <div class="feature-grid">
+          <div class="feature-card">
+            <div class="feature-icon">🆓</div>
+            <h3>100% Free</h3>
+            <p>No subscriptions, no credit cards. Generate unlimited virtual numbers for free.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🌍</div>
+            <h3>100+ Countries</h3>
+            <p>USA, UK, Canada, China, India, Germany, Japan and 90+ more countries available.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">⚡</div>
+            <h3>Instant Numbers</h3>
+            <p>Get a virtual number in seconds. No delays, no verification needed.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">🔒</div>
+            <h3>Private &amp; Secure</h3>
+            <p>All data stored locally in your browser. Nothing leaves your device.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">📲</div>
+            <h3>12 Platforms</h3>
+            <p>Works with Facebook, Instagram, WhatsApp, Gmail, Telegram and more.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">💾</div>
+            <h3>Persistent Storage</h3>
+            <p>Your numbers and history are saved locally and survive page refreshes.</p>
+          </div>
+        </div>
+
+        <div class="how-to-card">
+          <h3>How to Use</h3>
+          <ol class="how-to-list">
+            <li><strong>Generate a Number</strong> — Go to <em>Virtual Numbers</em>, pick a country &amp; city, and click Generate.</li>
+            <li><strong>Save the Number</strong> — Click <em>Save Number</em> to keep it for reuse.</li>
+            <li><strong>Verify an App</strong> — Go to <em>SMS Verify</em> or <em>Social Media</em>, select your number, and click Request Code.</li>
+            <li><strong>Use the Code</strong> — Copy the 6-digit code, paste it into the app/website, and click Confirm.</li>
+            <li><strong>Check Messages</strong> — All SMS activity is logged in the <em>Messages</em> tab.</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: VIRTUAL NUMBERS ─── -->
+    <div class="tab-panel" id="panel-numbers">
+      <div class="panel-inner">
+        <h2 class="panel-title">Virtual Numbers</h2>
+
+        <div class="card">
+          <h3 class="card-title">Generate a Number</h3>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="select-country">Country</label>
+              <select id="select-country" onchange="populateCitySelect(this.value)">
+                <option value="">— Select Country —</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="select-city">City / Area Code</label>
+              <select id="select-city">
+                <option value="">— Select City —</option>
+              </select>
+            </div>
+          </div>
+          <div id="number-preview" class="number-preview" style="display:none">
+            <span class="preview-label">Generated Number</span>
+            <span class="preview-number" id="preview-number-val"></span>
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-primary" onclick="generateNumber()">Generate Number</button>
+            <button class="btn btn-success" id="btn-save-number" onclick="saveNumber()" style="display:none">Save Number</button>
+            <button class="btn btn-ghost" id="btn-copy-number" onclick="copyNumber()" style="display:none">Copy</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <h3 class="card-title">Saved Numbers</h3>
+            <span class="badge-count" id="saved-count">0</span>
+          </div>
+          <div id="saved-numbers-list" class="saved-list">
+            <div class="empty-state">No numbers saved yet. Generate one above!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: SMS VERIFICATION ─── -->
+    <div class="tab-panel" id="panel-verify">
+      <div class="panel-inner">
+        <h2 class="panel-title">SMS Verification</h2>
+
+        <div class="card">
+          <h3 class="card-title">Request Verification Code</h3>
+          <div class="form-group">
+            <label for="verify-number-select">Select Number</label>
+            <select id="verify-number-select">
+              <option value="">— Select a saved number —</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="verify-platform-input">Platform / Service (optional)</label>
+            <input type="text" id="verify-platform-input" placeholder="e.g. Facebook, Netflix…" />
+          </div>
+          <button class="btn btn-primary" onclick="requestCode()">Request Code</button>
+        </div>
+
+        <div class="card" id="active-code-card" style="display:none">
+          <h3 class="card-title">Active Verification Code</h3>
+          <div class="code-display">
+            <span class="verify-code" id="active-code-display">------</span>
+            <button class="btn btn-ghost btn-sm" onclick="copyActiveCode()">Copy</button>
+          </div>
+          <div class="timer-row">
+            <span class="timer-label">Expires in:</span>
+            <span class="timer-val" id="countdown-display">5:00</span>
+          </div>
+          <button class="btn btn-success" onclick="confirmVerification()">Confirm Verification ✓</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title-row">
+            <h3 class="card-title">Verification History</h3>
+            <span class="badge-count" id="verify-count">0</span>
+          </div>
+          <div id="verify-history-list" class="saved-list">
+            <div class="empty-state">No verifications yet.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: SOCIAL MEDIA ─── -->
+    <div class="tab-panel" id="panel-social">
+      <div class="panel-inner">
+        <h2 class="panel-title">Social Media Verification</h2>
+        <p class="panel-subtitle">Click a platform to generate a verification code for it.</p>
+        <div class="platform-grid" id="platform-grid"></div>
+      </div>
+    </div>
+
+    <!-- ─── TAB: MESSAGES ─── -->
+    <div class="tab-panel" id="panel-messages">
+      <div class="panel-inner">
+        <div class="panel-title-row">
+          <h2 class="panel-title">Message History</h2>
+          <button class="btn btn-danger btn-sm" onclick="clearMessages()">Clear All</button>
+        </div>
+        <div id="messages-list" class="messages-list">
+          <div class="empty-state">No messages yet.</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /#app -->
+
+  <!-- ═══════════════════ SOCIAL MEDIA MODAL ═══════════════════ -->
+  <div id="platform-modal" class="modal-overlay" style="display:none" onclick="closeModalOnOverlay(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-platform-icon" id="modal-platform-icon"></div>
+      <h3 class="modal-platform-name" id="modal-platform-name"></h3>
+
+      <div class="form-group">
+        <label for="modal-number-select">Select Number</label>
+        <select id="modal-number-select">
+          <option value="">— Select a saved number —</option>
+        </select>
+      </div>
+
+      <button class="btn btn-primary btn-full" onclick="generatePlatformCode()">Generate Verification Code</button>
+
+      <div class="modal-code-section" id="modal-code-section" style="display:none">
+        <div class="code-display">
+          <span class="verify-code" id="modal-code-display">------</span>
+          <button class="btn btn-ghost btn-sm" onclick="copyModalCode()">Copy</button>
+        </div>
+        <div class="timer-row">
+          <span class="timer-label">Expires in:</span>
+          <span class="timer-val" id="modal-countdown">5:00</span>
+        </div>
+        <button class="btn btn-success btn-full" onclick="confirmModalVerification()">Confirm ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ TOAST CONTAINER ═══════════════════ -->
+  <div id="toast-container"></div>
+
+  <script src="sms-virtual-app.js"></script>
+</body>
+</html>
