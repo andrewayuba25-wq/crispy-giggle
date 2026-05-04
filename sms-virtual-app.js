@@ -2,22 +2,42 @@
    DRACO NATION — SMS Virtual App Logic
 ═══════════════════════════════════════════ */
 
-// ─── AUTH ────────────────────────────────────────────────────────────────────
-const ALLOWED_EMAIL = 'AndrewAyuba25@gmail.com';
-const AUTH_KEY = 'smsapp_auth';
+// ─── AUTH & TIER ─────────────────────────────────────────────────────────────
+const OWNER_EMAIL   = 'AndrewAyuba25@gmail.com';
+const AUTH_KEY      = 'smsapp_auth';
+const EMAIL_KEY     = 'smsapp_email';
+const PREMIUM_KEY   = 'smsapp_premium';
+const FREE_LIMIT    = 3;    // max saved numbers on free tier
+const FREE_DURATION = 300;  // code expiry seconds (5 min)
+const PREM_DURATION = 600;  // code expiry seconds (10 min)
+
+// License keys that unlock premium (share these with donors)
+const VALID_KEYS = new Set([
+  'DRACO-PREM-2026-GOLD',
+  'DRACO-PREM-2026-FIRE',
+  'DRACO-PREM-2026-UNLK',
+  'DRACO-PREM-2026-RISE',
+  'DRACO-PREM-2026-APEX',
+]);
+
+function isOwner()   { return (localStorage.getItem(EMAIL_KEY) || '').toLowerCase() === OWNER_EMAIL.toLowerCase(); }
+function isPremium() { return isOwner() || localStorage.getItem(PREMIUM_KEY) === '1'; }
+function codeDuration() { return isPremium() ? PREM_DURATION : FREE_DURATION; }
 
 function attemptLogin() {
   const input = document.getElementById('login-email').value.trim();
   const errEl = document.getElementById('login-error');
-  if (input.toLowerCase() === ALLOWED_EMAIL.toLowerCase()) {
-    localStorage.setItem(AUTH_KEY, '1');
-    document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
-    init();
-  } else {
+  if (!input || !input.includes('@')) {
+    errEl.textContent = 'Please enter a valid email address.';
     errEl.style.display = 'block';
     setTimeout(() => { errEl.style.display = 'none'; }, 4000);
+    return;
   }
+  localStorage.setItem(AUTH_KEY,  '1');
+  localStorage.setItem(EMAIL_KEY, input);
+  document.getElementById('login-screen').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  init();
 }
 
 function logout() {
@@ -29,11 +49,93 @@ function logout() {
   clearInterval(modalCountdownInterval);
 }
 
+function activateLicense() {
+  const key    = (document.getElementById('license-key-input').value || '').trim().toUpperCase();
+  const errEl  = document.getElementById('license-error');
+  const succEl = document.getElementById('license-success');
+  errEl.style.display  = 'none';
+  succEl.style.display = 'none';
+  if (VALID_KEYS.has(key)) {
+    localStorage.setItem(PREMIUM_KEY, '1');
+    succEl.style.display = 'block';
+    renderTierUI();
+    showToast('Premium unlocked! ⭐', 'gold', 4000);
+    document.getElementById('license-key-input').value = '';
+  } else {
+    errEl.textContent    = 'Invalid license key. Try again.';
+    errEl.style.display  = 'block';
+    setTimeout(() => { errEl.style.display = 'none'; }, 4000);
+  }
+}
+
+function renderTierUI() {
+  const owner   = isOwner();
+  const premium = isPremium();
+  const badge   = document.getElementById('tier-badge-header');
+
+  // Header badge
+  if (owner) {
+    badge.textContent  = '👑 OWNER';
+    badge.className    = 'tier-badge owner';
+  } else if (premium) {
+    badge.textContent  = '⭐ PREMIUM';
+    badge.className    = 'tier-badge premium';
+  } else {
+    badge.textContent  = 'FREE';
+    badge.className    = 'tier-badge free';
+  }
+
+  // Dashboard banners
+  document.getElementById('owner-banner').style.display   = owner   ? 'flex' : 'none';
+  document.getElementById('premium-banner').style.display = (!owner && premium) ? 'flex' : 'none';
+  document.getElementById('free-banner').style.display    = (!premium) ? 'flex' : 'none';
+
+  // Support tab — show/hide upgrade vs already-premium card
+  const upgradeCard  = document.getElementById('upgrade-card');
+  const alreadyCard  = document.getElementById('already-premium-card');
+  if (premium) {
+    upgradeCard.style.display  = 'none';
+    alreadyCard.style.display  = 'block';
+    const iconEl  = document.getElementById('tier-icon-big');
+    const titleEl = document.getElementById('tier-title-big');
+    const descEl  = document.getElementById('tier-desc-big');
+    if (owner) {
+      iconEl.textContent  = '👑';
+      titleEl.textContent = 'Owner Account — Unlimited Free Access';
+      descEl.textContent  = 'All premium features are permanently unlocked for AndrewAyuba25@gmail.com.';
+    } else {
+      iconEl.textContent  = '⭐';
+      titleEl.textContent = 'Premium Active';
+      descEl.textContent  = 'Unlimited numbers and 10-minute codes are active on your account.';
+    }
+  } else {
+    upgradeCard.style.display  = 'block';
+    alreadyCard.style.display  = 'none';
+  }
+
+  // Numbers limit label
+  const limitEl = document.getElementById('numbers-limit-label');
+  if (limitEl) limitEl.textContent = premium ? '' : `(${state.numbers.length} / ${FREE_LIMIT} free)`;
+}
+
 document.addEventListener('keydown', (e) => {
   if (document.getElementById('login-screen').style.display !== 'none' && e.key === 'Enter') {
     attemptLogin();
   }
 });
+
+// ─── UPGRADE PROMPT MODAL ────────────────────────────────────────────────────
+function showUpgradeModal() {
+  document.getElementById('upgrade-modal').style.display = 'flex';
+}
+
+function closeUpgradeModal() {
+  document.getElementById('upgrade-modal').style.display = 'none';
+}
+
+function closeUpgradeModalOnOverlay(e) {
+  if (e.target === document.getElementById('upgrade-modal')) closeUpgradeModal();
+}
 
 // ─── 100+ COUNTRIES ───────────────────────────────────────────────────────────
 const COUNTRIES = [
@@ -456,11 +558,12 @@ function switchTab(id) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.getElementById('panel-' + id).classList.add('active');
   document.getElementById('tab-btn-' + id).classList.add('active');
-  if (id === 'dashboard')  renderDashboard();
+  if (id === 'dashboard')  { renderDashboard(); renderTierUI(); }
   if (id === 'verify')     { refreshNumberDropdowns(); renderVerificationHistory(); }
   if (id === 'social')     renderPlatforms();
   if (id === 'messages')   renderMessages();
-  if (id === 'numbers')    renderSavedNumbers();
+  if (id === 'numbers')    { renderSavedNumbers(); renderTierUI(); }
+  if (id === 'support')    renderTierUI();
 }
 
 // ─── COUNTRY / CITY SELECTORS ────────────────────────────────────────────────
@@ -529,6 +632,9 @@ function saveNumber() {
   if (state.numbers.some(n => n.number === currentGeneratedNumber)) {
     showToast('This number is already saved.', 'info'); return;
   }
+  if (!isPremium() && state.numbers.length >= FREE_LIMIT) {
+    showUpgradeModal(); return;
+  }
   const entry = {
     id: uid(),
     number: currentGeneratedNumber,
@@ -540,6 +646,7 @@ function saveNumber() {
   renderSavedNumbers();
   refreshNumberDropdowns();
   renderDashboard();
+  renderTierUI();
   showToast('Number saved! ✓', 'success');
   document.getElementById('btn-save-number').style.display = 'none';
 }
@@ -624,7 +731,7 @@ function requestCode() {
   activeVerificationId = verification.id;
   document.getElementById('active-code-display').textContent = code;
   document.getElementById('active-code-card').style.display = 'block';
-  startCountdown(300, 'countdown-display', () => expireVerification(verification.id));
+  startCountdown(codeDuration(), 'countdown-display', () => expireVerification(verification.id));
   renderVerificationHistory();
   renderDashboard();
   showToast(`Code generated for ${platform}!`, 'gold');
@@ -778,7 +885,7 @@ function generatePlatformCode() {
 
   document.getElementById('modal-code-display').textContent = code;
   document.getElementById('modal-code-section').style.display = 'block';
-  startCountdown(300, 'modal-countdown', () => expireVerification(verification.id));
+  startCountdown(codeDuration(), 'modal-countdown', () => expireVerification(verification.id));
   renderDashboard();
   showToast(`${platform.name} code ready!`, 'gold');
 }
@@ -865,6 +972,7 @@ function fmtDate(iso) {
 function init() {
   loadState();
   populateCountrySelect();
+  renderTierUI();
   renderDashboard();
   renderSavedNumbers();
   refreshNumberDropdowns();

@@ -12,7 +12,8 @@
   <div id="login-screen">
     <div class="login-card">
       <div class="login-logo">
-        <img src="draco-nation-logo.png" alt="DRACO NATION" class="logo-img" onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'" />
+        <img src="draco-nation-logo.png" alt="DRACO NATION" class="logo-img"
+             onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block'" />
         <div id="logo-fallback" class="logo-badge" style="display:none">
           <span class="logo-title">DRACO NATION</span>
           <span class="logo-sub">🔒 ALL APPS ACTIVE · INSTANT ACCESS 🔒</span>
@@ -20,13 +21,14 @@
         </div>
       </div>
       <h2 class="login-heading">Sign In</h2>
-      <p class="login-desc">Enter your authorized email to access the platform.</p>
+      <p class="login-desc">Enter your email to access the platform.</p>
       <div class="form-group">
         <label for="login-email">Email Address</label>
         <input type="email" id="login-email" placeholder="you@example.com" autocomplete="email" />
       </div>
-      <div id="login-error" class="login-error" style="display:none">Unauthorized email. Access denied.</div>
+      <div id="login-error" class="login-error" style="display:none">Access denied. Email not recognized.</div>
       <button class="btn btn-primary btn-full" onclick="attemptLogin()">Access DRACO NATION</button>
+      <p class="login-footer-note">New user? Any email works — free tier unlocked automatically.</p>
     </div>
   </div>
 
@@ -36,12 +38,14 @@
     <!-- Header -->
     <header class="app-header">
       <div class="header-left">
-        <img src="draco-nation-logo.png" alt="DRACO NATION" class="header-logo-img" onerror="this.style.display='none'; document.getElementById('header-logo-fallback').style.display='flex'" />
+        <img src="draco-nation-logo.png" alt="DRACO NATION" class="header-logo-img"
+             onerror="this.style.display='none'; document.getElementById('header-logo-fallback').style.display='flex'" />
         <div id="header-logo-fallback" class="header-logo-text" style="display:none">
           <span class="header-brand">DRACO NATION</span>
         </div>
       </div>
       <div class="header-right">
+        <span id="tier-badge-header" class="tier-badge"></span>
         <span class="header-badge">🔒 SECURE</span>
         <button class="btn btn-ghost btn-sm" onclick="logout()">Sign Out</button>
       </div>
@@ -64,11 +68,38 @@
       <button class="tab-btn" id="tab-btn-messages" onclick="switchTab('messages')" role="tab">
         <span class="tab-icon">💬</span><span>Messages</span>
       </button>
+      <button class="tab-btn" id="tab-btn-support" onclick="switchTab('support')" role="tab">
+        <span class="tab-icon">⭐</span><span>Support</span>
+      </button>
     </nav>
 
     <!-- ─── TAB: DASHBOARD ─── -->
     <div class="tab-panel active" id="panel-dashboard">
       <div class="panel-inner">
+
+        <!-- Owner / Premium welcome banner -->
+        <div id="owner-banner" class="owner-banner" style="display:none">
+          <span class="owner-crown">👑</span>
+          <div>
+            <strong>Welcome, Owner!</strong>
+            <span>You have full unlimited access to all DRACO NATION features — forever free.</span>
+          </div>
+        </div>
+        <div id="premium-banner" class="premium-banner" style="display:none">
+          <span>⭐</span>
+          <div>
+            <strong>Premium Active</strong>
+            <span>Unlimited numbers, 10-minute codes, and all features unlocked.</span>
+          </div>
+        </div>
+        <div id="free-banner" class="free-banner" style="display:none">
+          <span>🆓</span>
+          <div>
+            <strong>Free Tier</strong>
+            <span>Save up to 3 numbers. <a href="#" onclick="switchTab('support'); return false;">Upgrade to Premium</a> for unlimited access.</span>
+          </div>
+        </div>
+
         <h2 class="panel-title">Dashboard</h2>
         <div class="stats-grid">
           <div class="stat-card">
@@ -96,18 +127,23 @@
         <div class="feature-grid">
           <div class="feature-card">
             <div class="feature-icon">🆓</div>
-            <h3>100% Free</h3>
-            <p>No subscriptions, no credit cards. Generate unlimited virtual numbers for free.</p>
+            <h3>Free Tier</h3>
+            <p>Up to 3 saved numbers and 5-minute verification codes. No card needed.</p>
+          </div>
+          <div class="feature-card premium-feature">
+            <div class="feature-icon">⭐</div>
+            <h3>Premium</h3>
+            <p>Unlimited numbers, 10-minute codes. Unlock with a license key.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">🌍</div>
             <h3>100+ Countries</h3>
-            <p>USA, UK, Canada, China, India, Germany, Japan and 90+ more countries available.</p>
+            <p>USA, UK, Canada, China, India, Germany, Japan and 90+ more.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">⚡</div>
             <h3>Instant Numbers</h3>
-            <p>Get a virtual number in seconds. No delays, no verification needed.</p>
+            <p>Get a virtual number in seconds. No delays, no extra sign-up.</p>
           </div>
           <div class="feature-card">
             <div class="feature-icon">🔒</div>
@@ -117,22 +153,17 @@
           <div class="feature-card">
             <div class="feature-icon">📲</div>
             <h3>12 Platforms</h3>
-            <p>Works with Facebook, Instagram, WhatsApp, Gmail, Telegram and more.</p>
-          </div>
-          <div class="feature-card">
-            <div class="feature-icon">💾</div>
-            <h3>Persistent Storage</h3>
-            <p>Your numbers and history are saved locally and survive page refreshes.</p>
+            <p>Facebook, Instagram, WhatsApp, Gmail, Telegram, Discord and more.</p>
           </div>
         </div>
 
         <div class="how-to-card">
           <h3>How to Use</h3>
           <ol class="how-to-list">
-            <li><strong>Generate a Number</strong> — Go to <em>Virtual Numbers</em>, pick a country &amp; city, and click Generate.</li>
+            <li><strong>Generate a Number</strong> — Go to <em>Virtual Numbers</em>, pick a country &amp; city, click Generate.</li>
             <li><strong>Save the Number</strong> — Click <em>Save Number</em> to keep it for reuse.</li>
-            <li><strong>Verify an App</strong> — Go to <em>SMS Verify</em> or <em>Social Media</em>, select your number, and click Request Code.</li>
-            <li><strong>Use the Code</strong> — Copy the 6-digit code, paste it into the app/website, and click Confirm.</li>
+            <li><strong>Verify an App</strong> — Go to <em>SMS Verify</em> or <em>Social Media</em>, select your number, click Request Code.</li>
+            <li><strong>Use the Code</strong> — Copy the 6-digit code, paste it into the app/website, click Confirm.</li>
             <li><strong>Check Messages</strong> — All SMS activity is logged in the <em>Messages</em> tab.</li>
           </ol>
         </div>
@@ -174,7 +205,10 @@
         <div class="card">
           <div class="card-title-row">
             <h3 class="card-title">Saved Numbers</h3>
-            <span class="badge-count" id="saved-count">0</span>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="badge-count" id="saved-count">0</span>
+              <span class="tier-limit-label" id="numbers-limit-label"></span>
+            </div>
           </div>
           <div id="saved-numbers-list" class="saved-list">
             <div class="empty-state">No numbers saved yet. Generate one above!</div>
@@ -250,6 +284,92 @@
       </div>
     </div>
 
+    <!-- ─── TAB: SUPPORT / UPGRADE ─── -->
+    <div class="tab-panel" id="panel-support">
+      <div class="panel-inner">
+        <h2 class="panel-title">Support &amp; Upgrade</h2>
+
+        <!-- Upgrade to Premium -->
+        <div class="card" id="upgrade-card">
+          <div class="upgrade-header">
+            <span class="upgrade-star">⭐</span>
+            <div>
+              <h3 class="card-title" style="margin-bottom:4px">Upgrade to Premium</h3>
+              <p style="font-size:13px;color:var(--color-text-muted)">Enter a license key to unlock unlimited features.</p>
+            </div>
+          </div>
+          <div class="premium-perks">
+            <div class="perk-item">✅ Unlimited saved numbers (free tier: 3)</div>
+            <div class="perk-item">✅ 10-minute verification codes (free: 5 min)</div>
+            <div class="perk-item">✅ Priority access to new features</div>
+            <div class="perk-item">✅ Premium badge on your account</div>
+          </div>
+          <div class="form-group" style="margin-top:16px">
+            <label for="license-key-input">License Key</label>
+            <input type="text" id="license-key-input" placeholder="DRACO-XXXX-XXXX-XXXX" autocomplete="off" />
+          </div>
+          <div id="license-error" class="login-error" style="display:none">Invalid license key.</div>
+          <div id="license-success" class="license-success" style="display:none">✓ Premium activated!</div>
+          <button class="btn btn-primary" onclick="activateLicense()">Activate License Key</button>
+          <p class="upgrade-note">Don't have a key? Support the project below to receive one.</p>
+        </div>
+
+        <!-- Already premium / owner message -->
+        <div class="card" id="already-premium-card" style="display:none">
+          <div style="text-align:center;padding:16px 0">
+            <div style="font-size:48px;margin-bottom:12px" id="tier-icon-big">⭐</div>
+            <h3 id="tier-title-big" style="font-size:20px;font-weight:700;margin-bottom:8px;color:var(--color-gold-light)">Premium Active</h3>
+            <p id="tier-desc-big" style="color:var(--color-text-muted);font-size:14px">All features are unlocked on your account.</p>
+          </div>
+        </div>
+
+        <!-- Tip Jar -->
+        <div class="card tip-jar-card">
+          <div class="tip-jar-header">
+            <span style="font-size:32px">💛</span>
+            <div>
+              <h3 class="card-title" style="margin-bottom:4px">Support DRACO NATION</h3>
+              <p style="font-size:13px;color:var(--color-text-muted)">This app is free. If it helps you, consider buying me a coffee!</p>
+            </div>
+          </div>
+          <div class="tip-amounts">
+            <a class="tip-btn" href="https://paypal.me/AndrewAyuba" target="_blank" rel="noopener">☕ $1 Coffee</a>
+            <a class="tip-btn tip-btn-featured" href="https://paypal.me/AndrewAyuba" target="_blank" rel="noopener">🍕 $5 Pizza</a>
+            <a class="tip-btn" href="https://paypal.me/AndrewAyuba" target="_blank" rel="noopener">🎁 $10 Gift</a>
+            <a class="tip-btn" href="https://paypal.me/AndrewAyuba" target="_blank" rel="noopener">💎 Custom</a>
+          </div>
+          <p class="tip-note">Donations help keep DRACO NATION free and add new features. Thank you! 🙏</p>
+        </div>
+
+        <!-- Privacy Policy -->
+        <div class="card" id="privacy-policy">
+          <h3 class="card-title">Privacy Policy</h3>
+          <div class="privacy-body">
+            <p><strong>Last updated:</strong> May 2026</p>
+
+            <h4>1. Data Collection</h4>
+            <p>DRACO NATION does <strong>not</strong> collect, transmit, or store any personal data on external servers. All information — including generated numbers, verification codes, and message logs — is stored exclusively in your browser's <code>localStorage</code> and never leaves your device.</p>
+
+            <h4>2. Local Storage</h4>
+            <p>We use <code>localStorage</code> to save your virtual numbers and activity history so that data persists between sessions. You can clear this data at any time by using your browser's built-in storage clearing tools, or by using the "Clear All" buttons within the app.</p>
+
+            <h4>3. Third-Party Services</h4>
+            <p>The optional donation links open PayPal's website in a new tab. PayPal's own privacy policy governs any data collected during that transaction. DRACO NATION does not receive or process any payment data.</p>
+
+            <h4>4. No Tracking</h4>
+            <p>DRACO NATION contains no analytics, advertising SDKs, cookies, or tracking pixels of any kind. Your usage is entirely private.</p>
+
+            <h4>5. Virtual Numbers</h4>
+            <p>The phone numbers generated by this app are virtual and for verification simulation purposes only. They are not real telephone numbers and cannot send or receive actual SMS messages.</p>
+
+            <h4>6. Contact</h4>
+            <p>Questions about this policy? Contact: <strong>AndrewAyuba25@gmail.com</strong></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div><!-- /#app -->
 
   <!-- ═══════════════════ SOCIAL MEDIA MODAL ═══════════════════ -->
@@ -278,6 +398,25 @@
           <span class="timer-val" id="modal-countdown">5:00</span>
         </div>
         <button class="btn btn-success btn-full" onclick="confirmModalVerification()">Confirm ✓</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════ UPGRADE PROMPT MODAL ═══════════════════ -->
+  <div id="upgrade-modal" class="modal-overlay" style="display:none" onclick="closeUpgradeModalOnOverlay(event)">
+    <div class="modal-card upgrade-modal-card">
+      <button class="modal-close" onclick="closeUpgradeModal()">✕</button>
+      <div style="text-align:center;padding:8px 0 20px">
+        <div style="font-size:48px;margin-bottom:12px">🔒</div>
+        <h3 style="font-size:18px;font-weight:700;margin-bottom:8px;color:var(--color-gold-light)">Free Tier Limit Reached</h3>
+        <p style="font-size:14px;color:var(--color-text-muted);margin-bottom:20px">Free accounts can save up to <strong style="color:var(--color-text)">3 numbers</strong>. Upgrade to Premium for unlimited numbers.</p>
+        <div class="premium-perks" style="text-align:left;margin-bottom:20px">
+          <div class="perk-item">⭐ Unlimited saved numbers</div>
+          <div class="perk-item">⏱️ 10-minute verification codes</div>
+          <div class="perk-item">🚀 Priority access to new features</div>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="closeUpgradeModal(); switchTab('support')">Upgrade Now →</button>
+        <button class="btn btn-ghost btn-full" style="margin-top:8px" onclick="closeUpgradeModal()">Maybe Later</button>
       </div>
     </div>
   </div>
