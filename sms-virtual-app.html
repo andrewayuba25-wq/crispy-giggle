@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DRACO NATION — Virtual SMS</title>
   <link rel="stylesheet" href="sms-virtual-app.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#7c3aed" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="DRACO NATION" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <meta name="description" content="Free virtual SMS numbers for 100+ countries. Verify any social media app instantly." />
 </head>
 <body>
 
@@ -425,5 +432,10 @@
   <div id="toast-container"></div>
 
   <script src="sms-virtual-app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  </script>
 </body>
 </html>
