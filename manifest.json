@@ -1,0 +1,38 @@
+{
+  "name": "DRACO NATION — Virtual SMS",
+  "short_name": "DRACO NATION",
+  "description": "Free virtual SMS numbers for 100+ countries. Verify any social media app instantly.",
+  "start_url": "/sms-virtual-app.html",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0f0f1a",
+  "theme_color": "#7c3aed",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    { "src": "icons/icon-72.png",   "sizes": "72x72",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-96.png",   "sizes": "96x96",   "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-128.png",  "sizes": "128x128", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-144.png",  "sizes": "144x144", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-152.png",  "sizes": "152x152", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-192.png",  "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-384.png",  "sizes": "384x384", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png",  "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "screenshots": [
+    { "src": "store-assets/screenshot-1.png", "sizes": "1280x720", "type": "image/png" }
+  ],
+  "shortcuts": [
+    {
+      "name": "Virtual Numbers",
+      "short_name": "Numbers",
+      "url": "/sms-virtual-app.html#numbers",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "SMS Verify",
+      "short_name": "Verify",
+      "url": "/sms-virtual-app.html#verify",
+      "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
+}
