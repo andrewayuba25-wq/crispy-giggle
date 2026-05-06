@@ -102,11 +102,11 @@ function renderTierUI() {
     if (owner) {
       iconEl.textContent  = '👑';
       titleEl.textContent = 'Owner Account — Unlimited Free Access';
-      descEl.textContent  = 'All premium features are permanently unlocked for AndrewAyuba25@gmail.com.';
+      descEl.textContent  = 'All features + 100% Private Speed permanently unlocked for AndrewAyuba25@gmail.com.';
     } else {
       iconEl.textContent  = '⭐';
-      titleEl.textContent = 'Premium Active';
-      descEl.textContent  = 'Unlimited numbers and 10-minute codes are active on your account.';
+      titleEl.textContent = 'Premium Active — 100% Private Speed';
+      descEl.textContent  = 'Unlimited numbers, 10-minute codes, and 100% Private Speed are active on your account.';
     }
   } else {
     upgradeCard.style.display  = 'block';
